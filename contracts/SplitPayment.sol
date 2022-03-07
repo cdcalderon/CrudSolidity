@@ -7,6 +7,8 @@ contract SplitPayment {
         public
         payable
     {
+        require(to.length == amount.length);
+
         for (uint256 i = 0; i < to.length; i++) {
             to[i].transfer(amount[i]);
         }
