@@ -20,6 +20,7 @@ contract SplitPayment {
     function send(address payable[] memory to, uint256[] memory amount)
         public
         payable
+        onlyOwner
     {
         if (to.length != amount.length) revert SplitPayment__InvalidArguments();
         //require(to.length == amount.length);
