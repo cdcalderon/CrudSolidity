@@ -3,9 +3,15 @@
 pragma solidity ^0.8.9;
 
 error SplitPayment__InvalidArguments();
+error SplitPayment__OnlyOwner();
 
 contract SplitPayment {
     address public owner;
+
+    modifier onlyOwner() {
+        if (msg.sender != owner) revert SplitPayment__OnlyOwner();
+        _;
+    }
 
     constructor(address _owner) {
         owner = _owner;
