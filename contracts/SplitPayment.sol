@@ -2,12 +2,15 @@
 
 pragma solidity ^0.8.9;
 
+error SplitPayment__InvalidArguments();
+
 contract SplitPayment {
     function send(address payable[] memory to, uint256[] memory amount)
         public
         payable
     {
-        require(to.length == amount.length);
+        if (to.length != amount.length) revert SplitPayment__InvalidArguments();
+        //require(to.length == amount.length);
 
         for (uint256 i = 0; i < to.length; i++) {
             to[i].transfer(amount[i]);
