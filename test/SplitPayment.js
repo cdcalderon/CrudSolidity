@@ -14,14 +14,9 @@ describe("SplitPayment", function () {
 
   it("Should create a SplitPayment", async () => {
     const recipients = [accounts[1], accounts[2], accounts[3]];
-
-    const addresses = [
-      accounts[1].address,
-      accounts[2].address,
-      accounts[3].address,
-    ];
-
+    const addresses = recipients.map((acct) => acct.address);
     const amounts = [40, 20, 30];
+    // get initial balances
     const initialBalances = await Promise.all(
       recipients.map((recipient) => {
         return recipient.getBalance();
@@ -33,6 +28,7 @@ describe("SplitPayment", function () {
       value: 90,
     });
 
+    // get final balances
     const finalBalances = await Promise.all(
       recipients.map((recipient) => {
         return recipient.getBalance();
@@ -43,9 +39,9 @@ describe("SplitPayment", function () {
       const finalBalance = finalBalances[i];
       const initialBalance = initialBalances[i];
 
-      console.log("finalBalance ", finalBalance);
-      console.log("initialBalance ", initialBalance);
-      console.log("amount ", amounts[i]);
+      // console.log("finalBalance ", finalBalance);
+      // console.log("initialBalance ", initialBalance);
+      // console.log("amount ", amounts[i]);
       expect(finalBalance.sub(initialBalance) === amounts[i]);
     });
   });
