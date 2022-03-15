@@ -45,4 +45,17 @@ describe("SplitPayment", function () {
       expect(finalBalance.sub(initialBalance) === amounts[i]);
     });
   });
+
+  it("Should not split payment if array length mismatch", async () => {
+    const recipients = [accounts[1], accounts[2], accounts[3]];
+    const addresses = recipients.map((acct) => acct.address);
+    const amounts = [40, 20]; // mismatch
+
+    await expect(
+      splitPayment.connect(deployer).send(addresses, amounts, {
+        from: deployer.address,
+        value: 90,
+      })
+    ).to.be.reverted;
+  });
 });
