@@ -16,8 +16,16 @@ describe("EtherWallet", function () {
 
     expect(owner).to.equal(deployer.address);
   });
-  // it("Should create a wallet", async () => {
-  //   const sendAmount = 1;
-  // await etherWallet.connect(deployer).send(accounts[1].address, );
-  // });
+
+  it("Should deposit ether to etherWallet", async () => {
+    const sendAmount = 100;
+    await etherWallet.connect(deployer).deposit({
+      from: deployer.address,
+      value: 100,
+    });
+
+    const balance = await ethers.provider.getBalance(etherWallet.address);
+
+    expect(balance).to.equal(sendAmount);
+  });
 });
