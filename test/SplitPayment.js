@@ -58,4 +58,17 @@ describe("SplitPayment", function () {
       })
     ).to.be.reverted;
   });
+
+  it("Should not split payment if caller is not owner", async () => {
+    const recipients = [accounts[1], accounts[2], accounts[3]];
+    const addresses = recipients.map((acct) => acct.address);
+    const amounts = [40, 20, 30];
+
+    await expect(
+      splitPayment.connect(deployer).send(addresses, amounts, {
+        from: accounts[5].address,
+        value: 90,
+      })
+    ).to.be.reverted;
+  });
 });
