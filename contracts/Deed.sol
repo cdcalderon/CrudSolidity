@@ -2,6 +2,8 @@
 pragma solidity ^0.8.17;
 
 error Deed__InvalidAmount();
+error Deed__NotCalledByLawyer(address caller);
+error Deed__CalledTooEarly(uint256 calledTime, uint256 earliest);
 
 contract Deed {
     address public lawyer;
@@ -15,6 +17,18 @@ contract Deed {
     ) payable {
         lawyer = _lawyer;
         beneficiary = _beneficiary;
-        _fromNow = _fromNow;
+        earliest = block.timestamp + _fromNow;
+    }
+
+    function withdraw() external {
+        if (msg.sender != lawyer) {
+            revert Deed__NotCalledByLawyer(msg.sender);
+        }
+
+        if (block.timestamp < earliest) {
+            revert Deed__CalledTooEarly(block.timestamp, earliest);
+        }
+
+        beneficiary.transfer(address(this).balance);
     }
 }
