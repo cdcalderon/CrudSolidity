@@ -30,4 +30,8 @@ contract Crud {
             }
         }
     }
+
+    function remove(uint256 id) public {
+        delete users[id];
+    }
 }
