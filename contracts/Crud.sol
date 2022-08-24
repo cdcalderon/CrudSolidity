@@ -22,4 +22,12 @@ contract Crud {
         }
         return (0, "");
     }
+
+    function update(uint256 id, string memory name) public {
+        for (uint256 i = 0; i < users.length; i++) {
+            if (users[i].id == id) {
+                users[i].name = name;
+            }
+        }
+    }
 }
