@@ -36,6 +36,6 @@ contract Crud {
                 returnIndex = i;
             }
         }
-        return returnIndex;
+        revert("User does not exist!!");
     }
 }
