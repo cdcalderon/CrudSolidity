@@ -7,7 +7,7 @@ contract Crud {
         string name;
     }
     User[] public users;
-    uint256 public nextId;
+    uint256 public nextId = 1;
 
     function create(string memory name) public {
         users.push(User({id: nextId, name: name}));
@@ -30,10 +30,9 @@ contract Crud {
     }
 
     function find(uint256 id) internal view returns (uint256) {
-        uint256 returnIndex = 0;
         for (uint256 i = 0; i < users.length; i++) {
             if (users[i].id == id) {
-                returnIndex = i;
+                return i;
             }
         }
         revert("User does not exist!!");
