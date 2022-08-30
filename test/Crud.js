@@ -12,7 +12,7 @@ describe("Crud", function () {
     await crud.create("Myself");
     const user = await crud.read(1);
 
-    assert(user[0].toNumber() === 1);
-    assert(user[1] === "Myself");
+    expect(user[0].toNumber() === 1);
+    expect(user[1] === "Myself");
   });
 });
