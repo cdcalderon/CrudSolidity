@@ -32,4 +32,8 @@ describe("Crud", function () {
     crud.destroy(1);
     await expect(crud.read(1)).to.be.reverted;
   });
+
+  it("Should NOT destroy a non-existing user", async () => {
+    await expect(crud.destroy(10)).to.be.reverted;
+  });
 });
