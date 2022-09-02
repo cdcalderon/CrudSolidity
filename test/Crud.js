@@ -27,4 +27,9 @@ describe("Crud", function () {
   it("Should NOT update a non-existing user", async () => {
     await expect(crud.update(3, "UpdateMe")).to.be.reverted;
   });
+
+  it("Should destroy a user", async () => {
+    crud.destroy(1);
+    await expect(crud.read(1)).to.be.reverted;
+  });
 });
