@@ -29,6 +29,11 @@ contract Crud {
         delete users[index];
     }
 
+    function destroy(uint256 id) public {
+        uint256 idx = find(id);
+        delete users[idx];
+    }
+
     function find(uint256 id) internal view returns (uint256) {
         for (uint256 i = 0; i < users.length; i++) {
             if (users[i].id == id) {
