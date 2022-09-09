@@ -19,4 +19,8 @@ contract EtherWallet {
 
         to.transfer(amount);
     }
+
+    function balanceOf() public view returns (uint256) {
+        return address(this).balance;
+    }
 }
