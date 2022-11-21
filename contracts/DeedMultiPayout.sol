@@ -9,6 +9,8 @@ contract DeedMultiPayout {
     address public lawyer;
     address payable public beneficiary;
     uint256 public earliest;
+    uint256 public amount;
+    uint256 public constant PAYOUTS = 10;
 
     constructor(
         address _lawyer,
