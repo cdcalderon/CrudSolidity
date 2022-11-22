@@ -11,6 +11,8 @@ contract DeedMultiPayout {
     uint256 public earliest;
     uint256 public amount;
     uint256 public constant PAYOUTS = 10;
+    uint256 public constant INTERVAL = 10;
+    uint256 public paidPayouts;
 
     constructor(
         address _lawyer,
@@ -20,10 +22,11 @@ contract DeedMultiPayout {
         lawyer = _lawyer;
         beneficiary = _beneficiary;
         earliest = block.timestamp + _fromNow;
+        amount = msg.value / PAYOUTS;
     }
 
     function withdraw() external {
-        if (msg.sender != lawyer) {
+        if (msg.sender != beneficiary) {
             revert Deed__NotCalledByLawyer(msg.sender);
         }
 
