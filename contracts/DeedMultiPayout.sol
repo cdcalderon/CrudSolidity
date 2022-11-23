@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-error Deed__InvalidAmount();
-error Deed__NotCalledByLawyer(address caller);
-error Deed__CalledTooEarly(uint256 calledTime, uint256 earliest);
+error DeedMultiPayout__InvalidAmount();
+error DeedMultiPayout__NotCalledByLawyer(address caller);
+error DeedMultiPayout__CalledTooEarly(uint256 calledTime, uint256 earliest);
+error DeedMultiPayout__InvalidPayouts();
 
 contract DeedMultiPayout {
     address public lawyer;
@@ -27,11 +28,15 @@ contract DeedMultiPayout {
 
     function withdraw() external {
         if (msg.sender != beneficiary) {
-            revert Deed__NotCalledByLawyer(msg.sender);
+            revert DeedMultiPayout__NotCalledByLawyer(msg.sender);
         }
 
         if (block.timestamp < earliest) {
-            revert Deed__CalledTooEarly(block.timestamp, earliest);
+            revert DeedMultiPayout__CalledTooEarly(block.timestamp, earliest);
+        }
+
+        if (paidPayouts > PAYOUTS) {
+            revert DeedMultiPayout__InvalidPayouts();
         }
 
         beneficiary.transfer(address(this).balance);
