@@ -39,6 +39,7 @@ contract DeedMultiPayout {
             revert DeedMultiPayout__InvalidPayouts();
         }
 
-        beneficiary.transfer(address(this).balance);
+        uint256 elligiblePayouts = (block.timestamp - earliest) / INTERVAL;
+        beneficiary.transfer(elligiblePayouts * amount);
     }
 }
