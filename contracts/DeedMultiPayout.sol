@@ -35,11 +35,13 @@ contract DeedMultiPayout {
             revert DeedMultiPayout__CalledTooEarly(block.timestamp, earliest);
         }
 
-        if (paidPayouts > PAYOUTS) {
+        if (paidPayouts >= PAYOUTS) {
             revert DeedMultiPayout__InvalidPayouts();
         }
 
         uint256 elligiblePayouts = (block.timestamp - earliest) / INTERVAL;
-        beneficiary.transfer(elligiblePayouts * amount);
+        uint256 duePayouts = elligiblePayouts - paidPayouts;
+        paidPayouts += duePayouts;
+        beneficiary.transfer(duePayouts * amount);
     }
 }
