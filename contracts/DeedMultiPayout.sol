@@ -41,6 +41,9 @@ contract DeedMultiPayout {
 
         uint256 elligiblePayouts = (block.timestamp - earliest) / INTERVAL;
         uint256 duePayouts = elligiblePayouts - paidPayouts;
+        duePayouts = duePayouts + paidPayouts <= PAYOUTS
+            ? PAYOUTS - paidPayouts
+            : duePayouts;
         paidPayouts += duePayouts;
         beneficiary.transfer(duePayouts * amount);
     }
