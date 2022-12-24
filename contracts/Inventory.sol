@@ -6,7 +6,7 @@ contract Inventory {
     mapping(uint256 => int256) quantities;
 
     function addItem(uint256 itemId, int256 quantity) public {
-        quantities[itemId] = quantity;
+        quantities[itemId] += quantity;
     }
 
     function getQuantity(uint256 itemId) public view returns (int256) {
