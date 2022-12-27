@@ -10,7 +10,7 @@ contract DebtTracking {
         address payingAddress,
         uint256 amount
     ) public {
-        owing[toBePaidAddress][payingAddress] = amount;
+        owing[toBePaidAddress][payingAddress] += amount;
     }
 
     function payDebt(
@@ -18,23 +18,22 @@ contract DebtTracking {
         address payingAddress,
         uint256 amount
     ) public {
-        require(amount > 0, "amount should be greater than zero");
         uint256 amountOwed = owing[toBePaidAddress][payingAddress];
 
         if (amount > amountOwed) {
-            uint256 change = amountOwed - amount;
+            uint256 change = amount - amountOwed;
             owing[toBePaidAddress][payingAddress] = 0;
-            owing[payingAddress][toBePaidAddress] = change;
+            owing[payingAddress][toBePaidAddress] += change;
         } else {
             owing[toBePaidAddress][payingAddress] -= amount;
         }
     }
 
-    function getDebt(address toBePaidAddress, address payingAddress)
+    function getDebt(address owedAddress, address payingAddress)
         public
         view
         returns (uint256)
     {
-        return owing[toBePaidAddress][payingAddress];
+        return owing[owedAddress][payingAddress];
     }
 }
