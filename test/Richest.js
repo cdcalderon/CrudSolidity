@@ -3,6 +3,8 @@ const { ethers } = require("hardhat");
 
 describe("Richest", async function () {
   let richest, deployer, acc1, acc2;
+  const account0DepositAmount = 1e3;
+  const account1DepositAmount = 2e7;
 
   before(async () => {
     accounts = await ethers.getSigners();
@@ -22,7 +24,7 @@ describe("Richest", async function () {
     console.log(acc0);
     await richest
       .connect(acc0)
-      .becomeRichest({ from: acc0.address, value: 1e3 });
+      .becomeRichest({ from: acc0.address, value: account0DepositAmount });
     const richestAddress = await richest.getRichest();
     assert.equal(acc0.address, richestAddress);
   });
@@ -39,15 +41,25 @@ describe("Richest", async function () {
   it("account1 can become richest", async () => {
     await richest
       .connect(acc1)
-      .becomeRichest({ from: acc1.address, value: 2e7 });
+      .becomeRichest({ from: acc1.address, value: account1DepositAmount });
     const richestAddress = await richest.getRichest();
     assert.equal(acc1.address, richestAddress);
   });
 
-  t("account1 cannot withdraw", async () => {
+  it("account1 cannot withdraw", async () => {
     const balance = await ethers.provider.getBalance(richest.address);
-    await richest.withdraw({ from: acc1.address });
+    await richest.connect(acc1).withdraw({ from: acc1.address });
     const newBalance = await ethers.provider.getBalance(richest.address);
     assert.equal(newBalance.toString(), balance.toString());
+  });
+
+  it("account0 can withdraw old richest funds", async () => {
+    const balance = await ethers.provider.getBalance(richest.address);
+    await richest.connect(acc0).withdraw({ from: acc0.address });
+    const newBalance = await ethers.provider.getBalance(richest.address);
+    assert.equal(
+      newBalance.toString(),
+      (balance - account0DepositAmount).toString()
+    );
   });
 });
