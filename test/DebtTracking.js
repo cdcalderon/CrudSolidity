@@ -3,11 +3,12 @@ const { ethers } = require("hardhat");
 
 describe("DebtTracking", async () => {
   let debtTracking, addr1, addr2, addr3;
-  accounts = await ethers.getSigners();
-  addr1 = accounts[0];
-  addr2 = accounts[1];
-  addr3 = accounts[2];
-  beforeEach(async () => {
+
+  before(async () => {
+    accounts = await ethers.getSigners();
+    addr1 = accounts[0];
+    addr2 = accounts[1];
+    addr3 = accounts[2];
     const DebtTracking = await ethers.getContractFactory("DebtTracking");
     debtTracking = await DebtTracking.deploy();
   });
