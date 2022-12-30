@@ -35,4 +35,19 @@ describe("Richest", async function () {
     //console.log(balance.toString(), newBalance.toString());
     assert.equal(newBalance.toString(), balance.toString());
   });
+
+  it("account1 can become richest", async () => {
+    await richest
+      .connect(acc1)
+      .becomeRichest({ from: acc1.address, value: 2e7 });
+    const richestAddress = await richest.getRichest();
+    assert.equal(acc1.address, richestAddress);
+  });
+
+  t("account1 cannot withdraw", async () => {
+    const balance = await ethers.provider.getBalance(richest.address);
+    await richest.withdraw({ from: acc1.address });
+    const newBalance = await ethers.provider.getBalance(richest.address);
+    assert.equal(newBalance.toString(), balance.toString());
+  });
 });
